@@ -8,11 +8,11 @@ import java.math.BigInteger;
  */
 public class Factorial 
 {
-    public static BigInteger factorial( int n ) throws IllegalArgumentException
+    public static BigInteger factorial( int n ) throws NegativeFactorialException
     {
         if (n < 0)
         {
-        	throw new IllegalArgumentException(String.format("Cannot compute factorial of negative number: %d", n));
+        	throw new NegativeFactorialException(n);
         }
         
         if(n > 1)
