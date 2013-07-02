@@ -6,11 +6,13 @@ package com.mycompany.app;
  */
 public class Factorial 
 {
-    public static void factorial( int n ) throws IllegalArgumentException
+    public static int factorial( int n ) throws IllegalArgumentException
     {
         if (n < 0)
         {
-        	throw new IllegalArgumentException(String.format("Cannot compute factorial of negative number: {0}", n));
+        	throw new IllegalArgumentException(String.format("Cannot compute factorial of negative number: %d", n));
         }
+        
+        return 1;
     }
 }
