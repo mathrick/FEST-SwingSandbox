@@ -15,12 +15,13 @@ public class Factorial
         	throw new NegativeFactorialException(n);
         }
         
-        if(n > 1)
+        BigInteger result = BigInteger.valueOf(1);
+        
+        while (n > 0)
         {
-        	return factorial(n-1).multiply(BigInteger.valueOf(n));
-        } else
-        {
-        	return BigInteger.ONE;
+        	result = result.multiply(BigInteger.valueOf(n--));
         }
+        
+        return result;
     }
 }
