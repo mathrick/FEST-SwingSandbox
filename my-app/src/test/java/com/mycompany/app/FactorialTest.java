@@ -1,7 +1,10 @@
 package com.mycompany.app;
 
-import org.junit.Test;
 import static org.junit.Assert.assertEquals;
+
+import java.math.BigInteger;
+
+import org.junit.Test;
 
 /**
  * Unit test for simple App.
@@ -17,11 +20,11 @@ public class FactorialTest
 	@Test
 	public void computeFactorials()
 	{
-		assertEquals(1, Factorial.factorial(0));
-		assertEquals(1, Factorial.factorial(1));
-		assertEquals(2, Factorial.factorial(2));
-		assertEquals(6, Factorial.factorial(3));
-		assertEquals(120, Factorial.factorial(5));
-		assertEquals(720, Factorial.factorial(6));
+		assertEquals(BigInteger.ONE, Factorial.factorial(0));
+		assertEquals(BigInteger.ONE, Factorial.factorial(1));
+		assertEquals(BigInteger.valueOf(2), Factorial.factorial(2));
+		assertEquals(BigInteger.valueOf(6), Factorial.factorial(3));
+		assertEquals(BigInteger.valueOf(120), Factorial.factorial(5));
+		assertEquals(BigInteger.valueOf(720), Factorial.factorial(6));
 	}
 }

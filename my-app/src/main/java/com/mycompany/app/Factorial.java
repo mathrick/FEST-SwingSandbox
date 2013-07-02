@@ -1,12 +1,14 @@
 package com.mycompany.app;
 
+import java.math.BigInteger;
+
 /**
  * Hello world!
  *
  */
 public class Factorial 
 {
-    public static int factorial( int n ) throws IllegalArgumentException
+    public static BigInteger factorial( int n ) throws IllegalArgumentException
     {
         if (n < 0)
         {
@@ -15,10 +17,10 @@ public class Factorial
         
         if(n > 1)
         {
-        	return n * factorial(n-1);
+        	return factorial(n-1).multiply(BigInteger.valueOf(n));
         } else
         {
-        	return 1;
+        	return BigInteger.ONE;
         }
     }
 }
