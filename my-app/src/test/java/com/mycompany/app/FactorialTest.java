@@ -19,6 +19,9 @@ public class FactorialTest
 	{
 		assertEquals(1, Factorial.factorial(0));
 		assertEquals(1, Factorial.factorial(1));
-		assertEquals(120, Factorial.factorial(6));
+		assertEquals(2, Factorial.factorial(2));
+		assertEquals(6, Factorial.factorial(3));
+		assertEquals(120, Factorial.factorial(5));
+		assertEquals(720, Factorial.factorial(6));
 	}
 }

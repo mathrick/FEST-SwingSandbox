@@ -13,6 +13,12 @@ public class Factorial
         	throw new IllegalArgumentException(String.format("Cannot compute factorial of negative number: %d", n));
         }
         
-        return 1;
+        if(n > 1)
+        {
+        	return n * factorial(n-1);
+        } else
+        {
+        	return 1;
+        }
     }
 }
