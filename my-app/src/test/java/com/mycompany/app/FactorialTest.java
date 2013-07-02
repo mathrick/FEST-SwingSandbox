@@ -11,7 +11,7 @@ import org.junit.Test;
  */
 public class FactorialTest 
 {
-	@Test(expected=IllegalArgumentException.class)
+	@Test(expected=NegativeFactorialException.class)
     public void noNegativeFactorial()
     {
         Factorial.factorial(-1);
