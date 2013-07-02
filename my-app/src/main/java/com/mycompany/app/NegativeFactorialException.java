@@ -12,22 +12,18 @@ public class NegativeFactorialException extends IllegalArgumentException {
 
 	public NegativeFactorialException() {
 		super(msg);
-		// TODO Auto-generated constructor stub
 	}
 
 	public NegativeFactorialException(int n) {
 		super(String.format(fmt, n));
-		// TODO Auto-generated constructor stub
 	}
 
 	public NegativeFactorialException(int n, Throwable cause) {
 		super(String.format(fmt, n), cause);
-		// TODO Auto-generated constructor stub
 	}
 
 	public NegativeFactorialException(Throwable cause) {
 		super(msg, cause);
-		// TODO Auto-generated constructor stub
 	}
 	
 }
