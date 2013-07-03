@@ -1,11 +1,10 @@
 package org.mathrick.swingsandbox;
 
-import static org.fluentjava.FluentUtils.*;
+import static org.fluentjava.FluentUtils.irange;
 
 import java.awt.CardLayout;
 import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -22,7 +21,6 @@ import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
 import javax.swing.JTextPane;
-import javax.swing.SpinnerNumberModel;
 import javax.swing.SpringLayout;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
@@ -72,7 +70,7 @@ public class Main {
 		final State state = new State(SeqType.SEQ_FACT, true, 0, 0, 10);
 		
 		JFrame frame = new JFrame("Fractonacci");
-		frame.setMinimumSize(new Dimension(500, 300));
+		frame.setPreferredSize(new Dimension(500, 450));
 		
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		SpringLayout springLayout = new SpringLayout();
@@ -166,22 +164,19 @@ public class Main {
 		textResult.setAlignmentX(Component.LEFT_ALIGNMENT);
 		
 		
-		JPanel panel4 = new JPanel();
-		springLayout.putConstraint(SpringLayout.SOUTH, panel1, 0, SpringLayout.SOUTH, panel4);
-		frame.getContentPane().add(panel4);
 		
 		JButton btnGenerate = new JButton("Generate");
+		springLayout.putConstraint(SpringLayout.SOUTH, btnGenerate, 0, SpringLayout.SOUTH, panel1);
+		frame.getContentPane().add(btnGenerate);
 		btnGenerate.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				showSequence(textResult, state);
 			}
 		});
-		panel4.add(btnGenerate);
 		
 		final JPanel panel5 = new JPanel();
-		springLayout.putConstraint(SpringLayout.NORTH, panel4, 6, SpringLayout.SOUTH, panel5);
-		springLayout.putConstraint(SpringLayout.WEST, panel4, 0, SpringLayout.WEST, panel5);
-		springLayout.putConstraint(SpringLayout.EAST, panel4, 0, SpringLayout.EAST, panel5);
+		springLayout.putConstraint(SpringLayout.WEST, btnGenerate, 0, SpringLayout.WEST, panel5);
+		springLayout.putConstraint(SpringLayout.EAST, btnGenerate, 0, SpringLayout.EAST, panel5);
 		frame.getContentPane().add(panel5);
 		final CardLayout argLayout = new CardLayout(0, 0);
 		panel5.setLayout(argLayout);
@@ -197,6 +192,7 @@ public class Main {
 		panelFullSeq.add(horizontalStrut_1);
 		
 		spinFrom = new JSpinner();
+		spinFrom.setValue((Integer)state.seqFrom);
 		spinFrom.addChangeListener(new ChangeListener() {
 			public void stateChanged(ChangeEvent arg0) {
 				state.seqFrom = ((Integer)spinFrom.getValue());
@@ -214,6 +210,7 @@ public class Main {
 		panelFullSeq.add(horizontalStrut);
 		
 		spinTo = new JSpinner();
+		spinTo.setValue((Integer)state.seqTo);
 		spinTo.addChangeListener(new ChangeListener() {
 			public void stateChanged(ChangeEvent arg0) {
 				state.seqTo = ((Integer)spinTo.getValue());
@@ -225,9 +222,8 @@ public class Main {
 		panelFullSeq.add(glue);
 		
 		JPanel panelShortSeq = new JPanel();
-		FlowLayout flowLayout = (FlowLayout) panelShortSeq.getLayout();
-		flowLayout.setAlignment(FlowLayout.LEADING);
 		panel5.add(panelShortSeq, "shortSeq");
+		panelShortSeq.setLayout(new BoxLayout(panelShortSeq, BoxLayout.X_AXIS));
 		
 		JLabel lblArgument = new JLabel("Argument");
 		panelShortSeq.add(lblArgument);
@@ -238,6 +234,9 @@ public class Main {
 				state.seqArg = ((Integer)spinArg.getValue());
 			}
 		});
+		
+		Component horizontalStrut_3 = Box.createHorizontalStrut(6);
+		panelShortSeq.add(horizontalStrut_3);
 		panelShortSeq.add(spinArg);
 		
 		checkFullSeq.addActionListener(new ActionListener() {
@@ -271,24 +270,28 @@ public class Main {
 		String fmtFact = "%d! = %d\n";
 		String fmtFib = "fib(%d) = %d\n";
 		
+		int from, to;
 		if(state.fullSeq)
 		{
-			switch(state.seqType)
-			{
-				case SEQ_FACT:
-					for(Integer i: irange(state.seqFrom, state.seqTo))
-					{
-						str.append(String.format(fmtFact, i, MathOps.factorial(i)));
-					}
-				case SEQ_FIB:
-					for(Integer i: irange(state.seqFrom, state.seqTo))
-					{
-						str.append(String.format(fmtFact, i, MathOps.fibonacci(i)));
-					}
-			}
+			from = state.seqFrom;
+			to = state.seqTo;
 		} else
 		{
-			
+			from = to = state.seqArg;
 		}
+		
+		switch (state.seqType) {
+		case SEQ_FACT:
+			for (Integer i : irange(from, to + 1)) {
+				str.append(String.format(fmtFact, i, MathOps.factorial(i)));
+			}
+			break;
+		case SEQ_FIB:
+			for (Integer i : irange(from, to + 1)) {
+				str.append(String.format(fmtFib, i, MathOps.fibonacci(i)));
+			}
+			break;
+		}
+		text.setText(str.toString());
 	}
 }
