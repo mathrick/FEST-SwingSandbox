@@ -69,7 +69,7 @@ public class Main {
 
 		final State state = new State(SeqType.SEQ_FACT, true, 0, 0, 10);
 		
-		JFrame frame = new JFrame("Fractonacci");
+		JFrame frame = new JFrame("Factonacci");
 		frame.setPreferredSize(new Dimension(500, 450));
 		
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -193,6 +193,7 @@ public class Main {
 		
 		spinFrom = new JSpinner();
 		spinFrom.setValue((Integer)state.seqFrom);
+		((JSpinner.DefaultEditor)spinFrom.getEditor()).getTextField().setColumns(3);
 		spinFrom.addChangeListener(new ChangeListener() {
 			public void stateChanged(ChangeEvent arg0) {
 				state.seqFrom = ((Integer)spinFrom.getValue());
@@ -211,6 +212,7 @@ public class Main {
 		
 		spinTo = new JSpinner();
 		spinTo.setValue((Integer)state.seqTo);
+		((JSpinner.DefaultEditor)spinTo.getEditor()).getTextField().setColumns(3);
 		spinTo.addChangeListener(new ChangeListener() {
 			public void stateChanged(ChangeEvent arg0) {
 				state.seqTo = ((Integer)spinTo.getValue());
