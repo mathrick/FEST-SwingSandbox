@@ -1,4 +1,4 @@
-package com.mycompany.app;
+package org.mathrick.swingsandbox;
 
 import static org.junit.Assert.assertEquals;
 
@@ -10,32 +10,33 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
+import org.mathrick.swingsandbox.MathOps;
 
 @RunWith(Parameterized.class)
-public class FibonacciValuesTest
+public class FactorialValuesTest 
 {
 	private int arg, result;
 	
-    @Parameters(name="{index}: fib[{0}]! = {1}")
+    @Parameters(name="{index}: {0}! = {1}")
     public static Collection<Object[]> data() {
         return Arrays.asList(new Object[][] { 
-        		{ 0, 0 }, { 1, 1 }, 
-        		{ 2, 1 }, { 3, 2 }, 
-                { 4, 3 }, { 12, 144 }, 
-                {46, 1836311903} 
+        		{ 0, 1 }, { 1, 1 }, 
+        		{ 2, 2 }, { 3, 6 }, 
+                { 5, 120 }, { 6, 720 }, 
+                { 12, 479001600 } 
                 });
     }
 
-    public FibonacciValuesTest(int n, int expected)
+    public FactorialValuesTest(int n, int expected)
     {
     	arg = n;
     	result = expected;
     }
     
 	@Test
-	public void computeFibonacci()
+	public void computeFactorials()
 	{
-		assertEquals(BigInteger.valueOf(result), MathOps.fibonacci(arg));
+		assertEquals(BigInteger.valueOf(result), MathOps.factorial(arg));
 	}
 
 }

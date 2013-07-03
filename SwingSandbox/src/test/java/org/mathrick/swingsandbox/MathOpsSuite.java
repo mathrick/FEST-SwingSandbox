@@ -1,4 +1,4 @@
-package com.mycompany.app;
+package org.mathrick.swingsandbox;
 
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;

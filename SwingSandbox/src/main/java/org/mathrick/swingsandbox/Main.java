@@ -1,4 +1,4 @@
-package com.mycompany.app;
+package org.mathrick.swingsandbox;
 
 import java.awt.CardLayout;
 import java.awt.Component;

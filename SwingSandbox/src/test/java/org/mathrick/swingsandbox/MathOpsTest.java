@@ -1,6 +1,8 @@
-package com.mycompany.app;
+package org.mathrick.swingsandbox;
 
 import org.junit.Test;
+import org.mathrick.swingsandbox.MathOps;
+import org.mathrick.swingsandbox.NegativeFactorialException;
 
 public class MathOpsTest {
 
