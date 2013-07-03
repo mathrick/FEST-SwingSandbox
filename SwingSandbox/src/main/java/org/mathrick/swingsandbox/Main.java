@@ -1,5 +1,7 @@
 package org.mathrick.swingsandbox;
 
+import static org.fluentjava.FluentUtils.*;
+
 import java.awt.CardLayout;
 import java.awt.Component;
 import java.awt.Dimension;
@@ -274,7 +276,15 @@ public class Main {
 			switch(state.seqType)
 			{
 				case SEQ_FACT:
-					str.append(String.format(fmtFact, 1, MathOps.factorial(1)));
+					for(Integer i: irange(state.seqFrom, state.seqTo))
+					{
+						str.append(String.format(fmtFact, i, MathOps.factorial(i)));
+					}
+				case SEQ_FIB:
+					for(Integer i: irange(state.seqFrom, state.seqTo))
+					{
+						str.append(String.format(fmtFact, i, MathOps.fibonacci(i)));
+					}
 			}
 		} else
 		{
