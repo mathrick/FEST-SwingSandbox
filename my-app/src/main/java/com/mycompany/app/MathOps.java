@@ -6,7 +6,7 @@ import java.math.BigInteger;
  * Hello world!
  *
  */
-public class Factorial 
+public class MathOps 
 {
     public static BigInteger factorial( int n ) throws NegativeFactorialException
     {
@@ -23,5 +23,21 @@ public class Factorial
         }
         
         return result;
+    }
+    
+    public static BigInteger fibonacci( int n )
+    {
+    	BigInteger a = BigInteger.ZERO;
+    	BigInteger b = BigInteger.valueOf((int)Math.signum(n));
+    	BigInteger fib = BigInteger.ZERO;
+    	
+        for (n = Math.abs(n); n > 0; n--)
+        {
+        	a = b;
+        	b = fib;
+        	fib = a.add(b);
+        }
+        
+        return fib;
     }
 }
