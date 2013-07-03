@@ -1,31 +1,28 @@
 package com.mycompany.app;
 
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import java.awt.BorderLayout;
-import javax.swing.JPanel;
-import javax.swing.JRadioButton;
+import java.awt.CardLayout;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+
+import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
-import java.awt.Component;
-import javax.swing.SwingConstants;
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JRadioButton;
+import javax.swing.JScrollPane;
+import javax.swing.JTextField;
+import javax.swing.JTextPane;
 import javax.swing.SpringLayout;
 import javax.swing.border.EmptyBorder;
-import javax.swing.JCheckBox;
-import java.awt.FlowLayout;
-import javax.swing.JTextPane;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.TitledBorder;
-import com.jgoodies.forms.layout.FormLayout;
-import com.jgoodies.forms.layout.ColumnSpec;
-import com.jgoodies.forms.layout.RowSpec;
-import java.awt.Dimension;
-import javax.swing.JButton;
-import javax.swing.JTabbedPane;
-import javax.swing.JTextField;
-import java.awt.CardLayout;
-import javax.swing.Box;
+import javax.swing.UIManager;
 
 public class Main {
 	private static final JLabel labelHello = new JLabel("Sequence type");
@@ -64,6 +61,7 @@ public class Main {
 		panel2.setLayout(new BoxLayout(panel2, BoxLayout.Y_AXIS));
 		
 		JRadioButton radioFact = new JRadioButton("Factorial");
+		radioFact.setSelected(true);
 		buttonGroup.add(radioFact);
 		radioFact.setAlignmentY(Component.TOP_ALIGNMENT);
 		panel2.add(radioFact);
@@ -96,16 +94,18 @@ public class Main {
 		JPanel panel = new JPanel();
 		panel.setAlignmentY(Component.TOP_ALIGNMENT);
 		panel.setAlignmentX(Component.LEFT_ALIGNMENT);
-		panel.setBorder(new CompoundBorder(new EmptyBorder(0, 12, 0, 0), new BevelBorder(BevelBorder.LOWERED, null, null, null, null)));
+		panel.setBorder(new EmptyBorder(0, 12, 0, 0));
 		panel3.add(panel);
-		panel.setLayout(new BorderLayout(0, 0));
+		panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
 		
 		JTextPane textResult = new JTextPane();
-		panel.add(textResult);
+		JScrollPane scroll = new JScrollPane(textResult);
+		scroll.setBorder(UIManager.getBorder("ScrollPane.border"));
+		panel.add(scroll);
+		textResult.setBorder(null);
 		textResult.setAlignmentY(Component.TOP_ALIGNMENT);
 		textResult.setAlignmentX(Component.LEFT_ALIGNMENT);
-		textResult.setText("asasdasdasd");
-		textResult.setEditable(false);
+		
 		
 		JPanel panel4 = new JPanel();
 		springLayout.putConstraint(SpringLayout.SOUTH, panel1, 0, SpringLayout.SOUTH, panel4);
@@ -122,7 +122,7 @@ public class Main {
 		panel5.setLayout(new CardLayout(0, 0));
 		
 		JPanel panelFullSeq = new JPanel();
-		panel5.add(panelFullSeq, "name_965594730336054");
+		panel5.add(panelFullSeq, "fullSeq");
 		panelFullSeq.setLayout(new BoxLayout(panelFullSeq, BoxLayout.X_AXIS));
 		
 		JLabel lblFrom = new JLabel("From");
@@ -155,7 +155,9 @@ public class Main {
 		panelFullSeq.add(glue);
 		
 		JPanel panelShortSeq = new JPanel();
-		panel5.add(panelShortSeq, "name_965597978327799");
+		FlowLayout flowLayout = (FlowLayout) panelShortSeq.getLayout();
+		flowLayout.setAlignment(FlowLayout.LEADING);
+		panel5.add(panelShortSeq, "shortSeq");
 		
 		JLabel lblArgument = new JLabel("Argument");
 		panelShortSeq.add(lblArgument);
