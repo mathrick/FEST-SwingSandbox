@@ -18,14 +18,12 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.JTextPane;
 import javax.swing.SpringLayout;
-import javax.swing.border.EmptyBorder;
-import javax.swing.border.CompoundBorder;
-import javax.swing.border.BevelBorder;
-import javax.swing.border.TitledBorder;
 import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
+import javax.swing.border.EmptyBorder;
+import java.awt.Font;
 
 public class Main {
-	private static final JLabel labelHello = new JLabel("Sequence type");
 	private static final ButtonGroup buttonGroup = new ButtonGroup();
 	private static JTextField textField;
 	private static JTextField textField_1;
@@ -35,6 +33,15 @@ public class Main {
 	 * @param args
 	 */
 	public static void main(String[] args) {
+		try {
+			// Set System L&F
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+		} catch (UnsupportedLookAndFeelException e) {
+		} catch (ClassNotFoundException e) {
+		} catch (InstantiationException e) {
+		} catch (IllegalAccessException e) {
+		}
+		
 		JFrame frame = new JFrame("Fractonacci");
 		frame.setMinimumSize(new Dimension(500, 300));
 		
@@ -50,8 +57,13 @@ public class Main {
 		panel1.setAlignmentX(Component.LEFT_ALIGNMENT);
 		frame.getContentPane().add(panel1);
 		panel1.setLayout(new BoxLayout(panel1, BoxLayout.Y_AXIS));
-		labelHello.setAlignmentY(Component.TOP_ALIGNMENT);
-		panel1.add(labelHello);
+		
+		JLabel labelSeqType = new JLabel("Sequence type");
+		
+		Font boldFont = labelSeqType.getFont().deriveFont(Font.BOLD); 
+		labelSeqType.setFont(boldFont);
+		labelSeqType.setAlignmentY(Component.TOP_ALIGNMENT);
+		panel1.add(labelSeqType);
 		
 		JPanel panel2 = new JPanel();
 		panel2.setAlignmentY(Component.TOP_ALIGNMENT);
@@ -59,6 +71,9 @@ public class Main {
 		panel1.add(panel2);
 		panel2.setBorder(new EmptyBorder(0, 12, 0, 0));
 		panel2.setLayout(new BoxLayout(panel2, BoxLayout.Y_AXIS));
+		
+		Component verticalStrut_1 = Box.createVerticalStrut(6);
+		panel2.add(verticalStrut_1);
 		
 		JRadioButton radioFact = new JRadioButton("Factorial");
 		radioFact.setSelected(true);
@@ -88,8 +103,12 @@ public class Main {
 		panel3.setLayout(new BoxLayout(panel3, BoxLayout.Y_AXIS));
 		
 		JLabel labelResult = new JLabel("Result");
+		labelResult.setFont(boldFont);
 		labelResult.setAlignmentY(Component.TOP_ALIGNMENT);
 		panel3.add(labelResult);
+		
+		Component verticalStrut = Box.createVerticalStrut(6);
+		panel3.add(verticalStrut);
 		
 		JPanel panel = new JPanel();
 		panel.setAlignmentY(Component.TOP_ALIGNMENT);
@@ -100,7 +119,6 @@ public class Main {
 		
 		JTextPane textResult = new JTextPane();
 		JScrollPane scroll = new JScrollPane(textResult);
-		scroll.setBorder(UIManager.getBorder("ScrollPane.border"));
 		panel.add(scroll);
 		textResult.setBorder(null);
 		textResult.setAlignmentY(Component.TOP_ALIGNMENT);
@@ -132,7 +150,6 @@ public class Main {
 		panelFullSeq.add(horizontalStrut_1);
 		
 		textField = new JTextField();
-		textField.setMinimumSize(new Dimension(4, 20));
 		textField.setText("0");
 		panelFullSeq.add(textField);
 		textField.setColumns(3);
@@ -168,6 +185,7 @@ public class Main {
 		textField_2.setColumns(3);
 		
 		JLabel lblParameters = new JLabel("Parameters");
+		lblParameters.setFont(boldFont);
 		springLayout.putConstraint(SpringLayout.NORTH, lblParameters, 12, SpringLayout.NORTH, frame.getContentPane());
 		springLayout.putConstraint(SpringLayout.WEST, lblParameters, 6, SpringLayout.EAST, panel1);
 		springLayout.putConstraint(SpringLayout.NORTH, panel5, 6, SpringLayout.SOUTH, lblParameters);
