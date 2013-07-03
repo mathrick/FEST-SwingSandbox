@@ -4,6 +4,9 @@ import java.awt.CardLayout;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -15,23 +18,45 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
-import javax.swing.JTextField;
+import javax.swing.JSpinner;
 import javax.swing.JTextPane;
+import javax.swing.SpinnerNumberModel;
 import javax.swing.SpringLayout;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.border.EmptyBorder;
-import java.awt.Font;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 public class Main {
-	private static final ButtonGroup buttonGroup = new ButtonGroup();
-	private static JTextField textField;
-	private static JTextField textField_1;
-	private static JTextField textField_2;
+	private static class State {
+		public SeqType seqType;
+		public boolean fullSeq;
+		public int seqArg;
+		public int seqFrom;
+		public int seqTo;
 
-	/**
-	 * @param args
-	 */
+		public State(SeqType seqType, boolean fullSeq, int seqArg, int seqFrom,
+				int seqTo) {
+			this.seqType = seqType;
+			this.fullSeq = fullSeq;
+			this.seqArg = seqArg;
+			this.seqFrom = seqFrom;
+			this.seqTo = seqTo;
+		}
+	}
+
+	private static final ButtonGroup buttonGroup = new ButtonGroup();
+	private static JSpinner spinFrom;
+	private static JSpinner spinTo;
+	private static JSpinner spinArg;
+	
+	private static enum SeqType
+	{
+		SEQ_FACT,
+		SEQ_FIB
+	}
+	
 	public static void main(String[] args) {
 		try {
 			// Set System L&F
@@ -41,6 +66,8 @@ public class Main {
 		} catch (InstantiationException e) {
 		} catch (IllegalAccessException e) {
 		}
+
+		final State state = new State(SeqType.SEQ_FACT, true, 0, 0, 10);
 		
 		JFrame frame = new JFrame("Fractonacci");
 		frame.setMinimumSize(new Dimension(500, 300));
@@ -51,7 +78,7 @@ public class Main {
 		
 		JPanel panel1 = new JPanel();
 		springLayout.putConstraint(SpringLayout.NORTH, panel1, 12, SpringLayout.NORTH, frame.getContentPane());
-		springLayout.putConstraint(SpringLayout.WEST, panel1, 10, SpringLayout.WEST, frame.getContentPane());
+		springLayout.putConstraint(SpringLayout.WEST, panel1, 12, SpringLayout.WEST, frame.getContentPane());
 		panel1.setBorder(null);
 		panel1.setAlignmentY(Component.TOP_ALIGNMENT);
 		panel1.setAlignmentX(Component.LEFT_ALIGNMENT);
@@ -80,13 +107,25 @@ public class Main {
 		buttonGroup.add(radioFact);
 		radioFact.setAlignmentY(Component.TOP_ALIGNMENT);
 		panel2.add(radioFact);
-		
+
 		JRadioButton radioFib = new JRadioButton("Fibonacci");
 		radioFib.setAlignmentY(Component.TOP_ALIGNMENT);
 		panel2.add(radioFib);
 		buttonGroup.add(radioFib);
 		
-		JCheckBox checkFullSeq = new JCheckBox("Generate full sequence");
+		radioFact.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				state.seqType = SeqType.SEQ_FACT;
+			}
+		});
+
+		radioFib.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				state.seqType = SeqType.SEQ_FIB;
+			}
+		});
+
+		final JCheckBox checkFullSeq = new JCheckBox("Generate full sequence");
 		checkFullSeq.setAlignmentY(Component.TOP_ALIGNMENT);
 		checkFullSeq.setSelected(true);
 		panel2.add(checkFullSeq);
@@ -117,7 +156,7 @@ public class Main {
 		panel3.add(panel);
 		panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
 		
-		JTextPane textResult = new JTextPane();
+		final JTextPane textResult = new JTextPane();
 		JScrollPane scroll = new JScrollPane(textResult);
 		panel.add(scroll);
 		textResult.setBorder(null);
@@ -130,14 +169,20 @@ public class Main {
 		frame.getContentPane().add(panel4);
 		
 		JButton btnGenerate = new JButton("Generate");
+		btnGenerate.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				showSequence(textResult, state);
+			}
+		});
 		panel4.add(btnGenerate);
 		
-		JPanel panel5 = new JPanel();
+		final JPanel panel5 = new JPanel();
 		springLayout.putConstraint(SpringLayout.NORTH, panel4, 6, SpringLayout.SOUTH, panel5);
 		springLayout.putConstraint(SpringLayout.WEST, panel4, 0, SpringLayout.WEST, panel5);
 		springLayout.putConstraint(SpringLayout.EAST, panel4, 0, SpringLayout.EAST, panel5);
 		frame.getContentPane().add(panel5);
-		panel5.setLayout(new CardLayout(0, 0));
+		final CardLayout argLayout = new CardLayout(0, 0);
+		panel5.setLayout(argLayout);
 		
 		JPanel panelFullSeq = new JPanel();
 		panel5.add(panelFullSeq, "fullSeq");
@@ -149,10 +194,13 @@ public class Main {
 		Component horizontalStrut_1 = Box.createHorizontalStrut(6);
 		panelFullSeq.add(horizontalStrut_1);
 		
-		textField = new JTextField();
-		textField.setText("0");
-		panelFullSeq.add(textField);
-		textField.setColumns(3);
+		spinFrom = new JSpinner();
+		spinFrom.addChangeListener(new ChangeListener() {
+			public void stateChanged(ChangeEvent arg0) {
+				state.seqFrom = ((Integer)spinFrom.getValue());
+			}
+		});
+		panelFullSeq.add(spinFrom);
 		
 		Component horizontalStrut_2 = Box.createHorizontalStrut(6);
 		panelFullSeq.add(horizontalStrut_2);
@@ -163,10 +211,13 @@ public class Main {
 		Component horizontalStrut = Box.createHorizontalStrut(6);
 		panelFullSeq.add(horizontalStrut);
 		
-		textField_1 = new JTextField();
-		textField_1.setText("10");
-		panelFullSeq.add(textField_1);
-		textField_1.setColumns(3);
+		spinTo = new JSpinner();
+		spinTo.addChangeListener(new ChangeListener() {
+			public void stateChanged(ChangeEvent arg0) {
+				state.seqTo = ((Integer)spinTo.getValue());
+			}
+		});
+		panelFullSeq.add(spinTo);
 		
 		Component glue = Box.createGlue();
 		panelFullSeq.add(glue);
@@ -179,10 +230,27 @@ public class Main {
 		JLabel lblArgument = new JLabel("Argument");
 		panelShortSeq.add(lblArgument);
 		
-		textField_2 = new JTextField();
-		textField_2.setText("0");
-		panelShortSeq.add(textField_2);
-		textField_2.setColumns(3);
+		spinArg = new JSpinner();
+		spinArg.addChangeListener(new ChangeListener() {
+			public void stateChanged(ChangeEvent arg0) {
+				state.seqArg = ((Integer)spinArg.getValue());
+			}
+		});
+		panelShortSeq.add(spinArg);
+		
+		checkFullSeq.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				state.fullSeq = (checkFullSeq.isSelected());
+				if (state.fullSeq)
+				{
+					argLayout.show(panel5, "fullSeq");
+				} else
+				{
+					argLayout.show(panel5, "shortSeq");
+				}
+				
+			}
+		});
 		
 		JLabel lblParameters = new JLabel("Parameters");
 		lblParameters.setFont(boldFont);
@@ -193,5 +261,24 @@ public class Main {
 		frame.getContentPane().add(lblParameters);
 		frame.pack();
 		frame.setVisible(true);
+	}
+
+	protected static void showSequence(JTextPane text, State state) {
+
+		StringBuilder str = new StringBuilder();
+		String fmtFact = "%d! = %d\n";
+		String fmtFib = "fib(%d) = %d\n";
+		
+		if(state.fullSeq)
+		{
+			switch(state.seqType)
+			{
+				case SEQ_FACT:
+					str.append(String.format(fmtFact, 1, MathOps.factorial(1)));
+			}
+		} else
+		{
+			
+		}
 	}
 }
