@@ -28,7 +28,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-public class Main {
+public class GUIFrame extends JFrame {
 	private static class State {
 		public SeqType seqType;
 		public boolean fullSeq;
@@ -57,32 +57,29 @@ public class Main {
 		SEQ_FIB
 	}
 	
-	public static void main(String[] args) {
-		try {
-			// Set System L&F
-			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-		} catch (UnsupportedLookAndFeelException e) {
-		} catch (ClassNotFoundException e) {
-		} catch (InstantiationException e) {
-		} catch (IllegalAccessException e) {
-		}
+	public GUIFrame()
+	{
+		super("Factonacci");
+		initGUI();
+	}
+	
+	public void initGUI() {
 
 		final State state = new State(SeqType.SEQ_FACT, true, 0, 0, 10);
 		
-		JFrame frame = new JFrame("Factonacci");
-		frame.setPreferredSize(new Dimension(500, 450));
+		this.setPreferredSize(new Dimension(500, 450));
 		
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		SpringLayout springLayout = new SpringLayout();
-		frame.getContentPane().setLayout(springLayout);
+		this.getContentPane().setLayout(springLayout);
 		
 		JPanel panel1 = new JPanel();
-		springLayout.putConstraint(SpringLayout.NORTH, panel1, 12, SpringLayout.NORTH, frame.getContentPane());
-		springLayout.putConstraint(SpringLayout.WEST, panel1, 12, SpringLayout.WEST, frame.getContentPane());
+		springLayout.putConstraint(SpringLayout.NORTH, panel1, 12, SpringLayout.NORTH, this.getContentPane());
+		springLayout.putConstraint(SpringLayout.WEST, panel1, 12, SpringLayout.WEST, this.getContentPane());
 		panel1.setBorder(null);
 		panel1.setAlignmentY(Component.TOP_ALIGNMENT);
 		panel1.setAlignmentX(Component.LEFT_ALIGNMENT);
-		frame.getContentPane().add(panel1);
+		this.getContentPane().add(panel1);
 		panel1.setLayout(new BoxLayout(panel1, BoxLayout.Y_AXIS));
 		
 		JLabel labelSeqType = new JLabel("Sequence type");
@@ -103,12 +100,14 @@ public class Main {
 		panel2.add(verticalStrut_1);
 		
 		JRadioButton radioFact = new JRadioButton("Factorial");
+		radioFact.setName("factorial");
 		radioFact.setSelected(true);
 		buttonGroup.add(radioFact);
 		radioFact.setAlignmentY(Component.TOP_ALIGNMENT);
 		panel2.add(radioFact);
 
 		JRadioButton radioFib = new JRadioButton("Fibonacci");
+		radioFib.setName("fibonacci");
 		radioFib.setAlignmentY(Component.TOP_ALIGNMENT);
 		panel2.add(radioFib);
 		buttonGroup.add(radioFib);
@@ -126,19 +125,20 @@ public class Main {
 		});
 
 		final JCheckBox checkFullSeq = new JCheckBox("Generate full sequence");
+		checkFullSeq.setName("full");
 		checkFullSeq.setAlignmentY(Component.TOP_ALIGNMENT);
 		checkFullSeq.setSelected(true);
 		panel2.add(checkFullSeq);
 		
 		JPanel panel3 = new JPanel();
 		springLayout.putConstraint(SpringLayout.NORTH, panel3, 6, SpringLayout.SOUTH, panel1);
-		springLayout.putConstraint(SpringLayout.SOUTH, panel3, -6, SpringLayout.SOUTH, frame.getContentPane());
-		springLayout.putConstraint(SpringLayout.WEST, panel3, 10, SpringLayout.WEST, frame.getContentPane());
-		springLayout.putConstraint(SpringLayout.EAST, panel3, -10, SpringLayout.EAST, frame.getContentPane());
+		springLayout.putConstraint(SpringLayout.SOUTH, panel3, -6, SpringLayout.SOUTH, this.getContentPane());
+		springLayout.putConstraint(SpringLayout.WEST, panel3, 10, SpringLayout.WEST, this.getContentPane());
+		springLayout.putConstraint(SpringLayout.EAST, panel3, -10, SpringLayout.EAST, this.getContentPane());
 		panel3.setAlignmentY(Component.TOP_ALIGNMENT);
 		panel3.setAlignmentX(Component.LEFT_ALIGNMENT);
 		panel3.setBorder(null);
-		frame.getContentPane().add(panel3);
+		this.getContentPane().add(panel3);
 		panel3.setLayout(new BoxLayout(panel3, BoxLayout.Y_AXIS));
 		
 		JLabel labelResult = new JLabel("Result");
@@ -157,6 +157,7 @@ public class Main {
 		panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
 		
 		final JTextPane textResult = new JTextPane();
+		textResult.setName("result");
 		JScrollPane scroll = new JScrollPane(textResult);
 		panel.add(scroll);
 		textResult.setBorder(null);
@@ -166,8 +167,9 @@ public class Main {
 		
 		
 		JButton btnGenerate = new JButton("Generate");
+		btnGenerate.setName("generate");
 		springLayout.putConstraint(SpringLayout.SOUTH, btnGenerate, 0, SpringLayout.SOUTH, panel1);
-		frame.getContentPane().add(btnGenerate);
+		this.getContentPane().add(btnGenerate);
 		btnGenerate.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				showSequence(textResult, state);
@@ -177,7 +179,7 @@ public class Main {
 		final JPanel panel5 = new JPanel();
 		springLayout.putConstraint(SpringLayout.WEST, btnGenerate, 0, SpringLayout.WEST, panel5);
 		springLayout.putConstraint(SpringLayout.EAST, btnGenerate, 0, SpringLayout.EAST, panel5);
-		frame.getContentPane().add(panel5);
+		this.getContentPane().add(panel5);
 		final CardLayout argLayout = new CardLayout(0, 0);
 		panel5.setLayout(argLayout);
 		
@@ -192,6 +194,7 @@ public class Main {
 		panelFullSeq.add(horizontalStrut_1);
 		
 		spinFrom = new JSpinner();
+		spinFrom.setName("from");
 		spinFrom.setValue((Integer)state.seqFrom);
 		((JSpinner.DefaultEditor)spinFrom.getEditor()).getTextField().setColumns(3);
 		spinFrom.addChangeListener(new ChangeListener() {
@@ -211,6 +214,7 @@ public class Main {
 		panelFullSeq.add(horizontalStrut);
 		
 		spinTo = new JSpinner();
+		spinTo.setName("to");
 		spinTo.setValue((Integer)state.seqTo);
 		((JSpinner.DefaultEditor)spinTo.getEditor()).getTextField().setColumns(3);
 		spinTo.addChangeListener(new ChangeListener() {
@@ -231,6 +235,7 @@ public class Main {
 		panelShortSeq.add(lblArgument);
 		
 		spinArg = new JSpinner();
+		spinArg.setName("arg");
 		spinArg.addChangeListener(new ChangeListener() {
 			public void stateChanged(ChangeEvent arg0) {
 				state.seqArg = ((Integer)spinArg.getValue());
@@ -257,13 +262,12 @@ public class Main {
 		
 		JLabel lblParameters = new JLabel("Parameters");
 		lblParameters.setFont(boldFont);
-		springLayout.putConstraint(SpringLayout.NORTH, lblParameters, 12, SpringLayout.NORTH, frame.getContentPane());
+		springLayout.putConstraint(SpringLayout.NORTH, lblParameters, 12, SpringLayout.NORTH, this.getContentPane());
 		springLayout.putConstraint(SpringLayout.WEST, lblParameters, 6, SpringLayout.EAST, panel1);
 		springLayout.putConstraint(SpringLayout.NORTH, panel5, 6, SpringLayout.SOUTH, lblParameters);
 		springLayout.putConstraint(SpringLayout.WEST, panel5, 12, SpringLayout.WEST, lblParameters);
-		frame.getContentPane().add(lblParameters);
-		frame.pack();
-		frame.setVisible(true);
+		this.getContentPane().add(lblParameters);
+		this.pack();
 	}
 
 	protected static void showSequence(JTextPane text, State state) {
@@ -295,5 +299,23 @@ public class Main {
 			break;
 		}
 		text.setText(str.toString());
+	}
+
+	public static void main(String[] args) {
+		try {
+			// Set System L&F
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+		} 
+		catch (UnsupportedLookAndFeelException e) {} 
+		catch (ClassNotFoundException e) {} 
+		catch (InstantiationException e) {} 
+		catch (IllegalAccessException e) {}
+
+		java.awt.EventQueue.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				new GUIFrame().setVisible(true);
+			}
+		});
 	}
 }
