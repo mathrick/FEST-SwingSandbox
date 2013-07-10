@@ -126,7 +126,7 @@ public class GUIFrame extends JFrame {
 			public void itemStateChanged(ItemEvent event) {
 				if(event.getStateChange() == ItemEvent.SELECTED)
 				{
-					state.seqType = SeqType.SEQ_FACT;
+					state.seqType = SeqType.SEQ_FIB;
 				}
 			}
 		});
