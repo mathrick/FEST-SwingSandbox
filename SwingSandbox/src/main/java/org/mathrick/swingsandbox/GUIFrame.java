@@ -27,6 +27,8 @@ import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import java.awt.event.ItemListener;
+import java.awt.event.ItemEvent;
 
 public class GUIFrame extends JFrame {
 	private static class State {
@@ -63,9 +65,9 @@ public class GUIFrame extends JFrame {
 		initGUI();
 	}
 	
-	public void initGUI() {
+	private void initGUI() {
 
-		final State state = new State(SeqType.SEQ_FACT, true, 0, 0, 10);
+		final State state = new State(SeqType.SEQ_FACT, false, 0, 0, 10);
 		
 		this.setPreferredSize(new Dimension(500, 450));
 		
@@ -76,7 +78,6 @@ public class GUIFrame extends JFrame {
 		JPanel panel1 = new JPanel();
 		springLayout.putConstraint(SpringLayout.NORTH, panel1, 12, SpringLayout.NORTH, this.getContentPane());
 		springLayout.putConstraint(SpringLayout.WEST, panel1, 12, SpringLayout.WEST, this.getContentPane());
-		panel1.setBorder(null);
 		panel1.setAlignmentY(Component.TOP_ALIGNMENT);
 		panel1.setAlignmentX(Component.LEFT_ALIGNMENT);
 		this.getContentPane().add(panel1);
@@ -112,22 +113,27 @@ public class GUIFrame extends JFrame {
 		panel2.add(radioFib);
 		buttonGroup.add(radioFib);
 		
-		radioFact.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				state.seqType = SeqType.SEQ_FACT;
+		radioFact.addItemListener(new ItemListener() {
+			public void itemStateChanged(ItemEvent event) {
+				if(event.getStateChange() == ItemEvent.SELECTED)
+				{
+					state.seqType = SeqType.SEQ_FACT;
+				}
 			}
 		});
 
-		radioFib.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				state.seqType = SeqType.SEQ_FIB;
+		radioFib.addItemListener(new ItemListener() {
+			public void itemStateChanged(ItemEvent event) {
+				if(event.getStateChange() == ItemEvent.SELECTED)
+				{
+					state.seqType = SeqType.SEQ_FACT;
+				}
 			}
 		});
 
 		final JCheckBox checkFullSeq = new JCheckBox("Generate full sequence");
 		checkFullSeq.setName("full");
 		checkFullSeq.setAlignmentY(Component.TOP_ALIGNMENT);
-		checkFullSeq.setSelected(true);
 		panel2.add(checkFullSeq);
 		
 		JPanel panel3 = new JPanel();
@@ -266,6 +272,16 @@ public class GUIFrame extends JFrame {
 		springLayout.putConstraint(SpringLayout.WEST, lblParameters, 6, SpringLayout.EAST, panel1);
 		springLayout.putConstraint(SpringLayout.NORTH, panel5, 6, SpringLayout.SOUTH, lblParameters);
 		springLayout.putConstraint(SpringLayout.WEST, panel5, 12, SpringLayout.WEST, lblParameters);
+		
+		// Swing is stupid and doesn't let you fire events yourself; there's no way
+		// to set a checkbox to a known state while ensuring change listeners will be
+		// fired, which means we can get out of sync with the logic, unless we do the
+		// horrible hack with setting the state to the opposite of intended value and
+		// then doing doClick()
+		checkFullSeq.getModel().setSelected(!state.fullSeq);
+		checkFullSeq.doClick();
+		
+		
 		this.getContentPane().add(lblParameters);
 		this.pack();
 	}

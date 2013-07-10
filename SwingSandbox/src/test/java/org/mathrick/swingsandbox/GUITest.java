@@ -46,17 +46,18 @@ public class GUITest extends FestSwingTestCaseTemplate {
         cleanUp();
     }
 
-    private void setFromTo()
+    private void setSeq()
     {
+    	frame.checkBox("full").check();
     	frame.spinner("from").enterTextAndCommit("0");
     	frame.spinner("to").enterTextAndCommit("10");
     }
     
     @Test 
-    public void generateFactorial()
+    public void generateFactorialSeq()
     {
-    	setFromTo();
     	frame.radioButton("factorial").check();
+    	setSeq();
     	frame.button("generate").click();
     	assertThat(frame.textBox("result").text())
     	.isEqualTo("0! = 1\n" +
@@ -73,10 +74,10 @@ public class GUITest extends FestSwingTestCaseTemplate {
     }
     
     @Test
-    public void generateFibonacci()
+    public void generateFibonacciSeq()
     {
-    	setFromTo();
     	frame.radioButton("fibonacci").check();
+    	setSeq();
     	frame.button("generate").click();
     	assertThat(frame.textBox("result").text())
     	.isEqualTo("fib(0) = 0\n" +
