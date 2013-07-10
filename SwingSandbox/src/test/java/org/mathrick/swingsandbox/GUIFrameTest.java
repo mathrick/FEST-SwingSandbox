@@ -1,17 +1,21 @@
 package org.mathrick.swingsandbox;
 
-import org.fest.assertions.Assert;
-import static org.fest.assertions.Assertions.*;
+import static org.fest.assertions.Assertions.assertThat;
+
+import org.fest.swing.annotation.GUITest;
 import org.fest.swing.core.EmergencyAbortListener;
 import org.fest.swing.finder.WindowFinder;
 import org.fest.swing.fixture.FrameFixture;
+import org.fest.swing.junit.v4_5.runner.GUITestRunner;
 import org.fest.swing.launcher.ApplicationLauncher;
 import org.fest.swing.testing.FestSwingTestCaseTemplate;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
-public class GUITest extends FestSwingTestCaseTemplate {
+@RunWith(GUITestRunner.class)
+public class GUIFrameTest extends FestSwingTestCaseTemplate {
 	private EmergencyAbortListener abortListener;
 	private FrameFixture frame;
 	
@@ -53,7 +57,7 @@ public class GUITest extends FestSwingTestCaseTemplate {
     	frame.spinner("to").enterTextAndCommit("10");
     }
     
-    @Test 
+    @GUITest @Test 
     public void generateFactorialSeq()
     {
     	frame.radioButton("factorial").check();
@@ -73,7 +77,7 @@ public class GUITest extends FestSwingTestCaseTemplate {
     				"10! = 3628800\n");
     }
     
-    @Test
+    @GUITest @Test
     public void generateFibonacciSeq()
     {
     	frame.radioButton("fibonacci").check();
@@ -93,5 +97,35 @@ public class GUITest extends FestSwingTestCaseTemplate {
     			   	"fib(10) = 55\n");
     	
     	
+    }
+    
+    @GUITest @Test
+    public void generateFactorialSingle()
+    {
+    	frame.radioButton("factorial").check();
+    	frame.checkBox("full").uncheck();
+    	
+    	for (Object[] i : FactorialValuesTest.data())
+    	{
+    		frame.spinner("arg").enterTextAndCommit(i[0].toString());
+        	frame.button("generate").click();
+        	assertThat(frame.textBox("result").text())
+        	.isEqualTo(String.format("%d! = %d\n", i[0], i[1]));
+    	}
+    }
+    
+    @GUITest @Test
+    public void generateFibonacciSingle()
+    {
+    	frame.radioButton("fibonacci").check();
+    	frame.checkBox("full").uncheck();
+    	
+    	for (Object[] i : FibonacciValuesTest.data())
+    	{
+    		frame.spinner("arg").enterTextAndCommit(i[0].toString());
+        	frame.button("generate").click();
+        	assertThat(frame.textBox("result").text())
+        	.isEqualTo(String.format("fib(%d) = %d\n", i[0], i[1]));
+    	}
     }
 }
